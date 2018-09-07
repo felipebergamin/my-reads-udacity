@@ -7,7 +7,7 @@ class HeaderBar extends React.Component {
 
   render() {
     return (
-      <AppBar>
+      <AppBar position="sticky">
         <Toolbar classes={{ root: 'center-text' }}>
           <Typography variant="title" color="inherit" >
             My Reads
