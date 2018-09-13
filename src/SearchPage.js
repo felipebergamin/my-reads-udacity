@@ -27,7 +27,7 @@ const styles = theme => ({
 
 class SearchPage extends React.Component {
   state = {
-    books: [],
+    searchResult: [],
     debounceSearch: null,
   };
   debouncedSearch = null;
@@ -41,7 +41,26 @@ class SearchPage extends React.Component {
 
     this.debouncedSearch = debounce(() => {
       BooksAPI.search(searchValue)
-        .then(searchResult => this.setState({ books: searchResult }));
+        .then(searchResult => {
+          if (searchResult.error) {
+            alert(searchResult.error);
+            return;
+          }
+          const { myBooks } = this.props;
+
+          for(const searchBook of searchResult) {
+            for (const myBook of myBooks) {
+              // console.log('comparando', myBook.id, searchBook.id);
+              if (myBook.id === searchBook.id) {
+                // console.log('match');
+                searchBook.shelf = myBook.shelf;
+                break; // para a iteração, não é necessário iterar o resto do array
+              }
+            }
+          }
+
+          this.setState({ searchResult });
+        });
     }, 600);
     this.debouncedSearch();
   };
@@ -67,7 +86,7 @@ class SearchPage extends React.Component {
         </AppBar>
 
         <div className={classes.searchResults}>
-          {this.state.books.map(book => (
+          {this.state.searchResult.map(book => (
             <Book key={book.id} book={book} />
           ))}
         </div>

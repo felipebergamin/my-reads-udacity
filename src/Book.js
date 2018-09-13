@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, withStyles, Typography, Menu, MenuItem, Tooltip } from '@material-ui/core';
+import { Paper, withStyles, Typography, Menu, MenuItem, Tooltip, Chip } from '@material-ui/core';
 
 const styles = theme => ({
   card: {
@@ -64,6 +64,8 @@ class Book extends React.Component {
             <div className={classes.cover}>
               <img alt={book.title} src={book.imageLinks.thumbnail} />
             </div>
+
+            <Chip label={book.shelf} variant="outlined" />
 
             <div>
               <Typography className={classes.bookTitle}>{book.title}</Typography>
