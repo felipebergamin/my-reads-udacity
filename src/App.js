@@ -15,13 +15,27 @@ class App extends Component {
       .then(myBooks => this.setState({ myBooks }));
   }
 
+  updateBook = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+      .then(() => {
+        this.setState(state => {
+          const foundBook = state.myBooks.find(myBook => myBook.id === book.id);
+          
+          if (foundBook) foundBook.shelf = shelf;
+          else state.myBooks.push({...book, shelf});
+
+          return state;
+        });
+      })
+  }
+
   render() {
     return (
       <div>
         <Route exact path="/" component={ShowBookcases} />
 
         <Route exact path="/search" render={() => (
-          <SearchPage myBooks={this.state.myBooks} />
+          <SearchPage myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
         )} />
       </div>
     );

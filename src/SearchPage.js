@@ -28,17 +28,19 @@ const styles = theme => ({
 class SearchPage extends React.Component {
   state = {
     searchResult: [],
-    debounceSearch: null,
   };
   debouncedSearch = null;
 
   onSearchChange = (event) => {
     const searchValue = event.target.value;
 
+    // if exists a debounced search
     if (this.debouncedSearch) {
+      // clear it
       this.debouncedSearch.clear();
     }
 
+    // create a debounced search that will be executed 600ms after user stop typing
     this.debouncedSearch = debounce(() => {
       BooksAPI.search(searchValue)
         .then(searchResult => {
@@ -46,24 +48,45 @@ class SearchPage extends React.Component {
             alert(searchResult.error);
             return;
           }
-          const { myBooks } = this.props;
-
-          for(const searchBook of searchResult) {
-            for (const myBook of myBooks) {
-              // console.log('comparando', myBook.id, searchBook.id);
-              if (myBook.id === searchBook.id) {
-                // console.log('match');
-                searchBook.shelf = myBook.shelf;
-                break; // para a iteração, não é necessário iterar o resto do array
-              }
-            }
-          }
 
           this.setState({ searchResult });
         });
     }, 600);
+    // start debounce timer
     this.debouncedSearch();
   };
+
+  markAsWantToRead = book => {
+    this.props.onUpdateBook(book, 'wantToRead');
+  };
+
+  markAsRead = book => {
+    this.props.onUpdateBook(book, 'read');
+  };
+
+  markAsReading = book => {
+    this.props.onUpdateBook(book, 'currentlyReading');
+  };
+
+  /**
+   * Receives two objects and return JSX for book that isn't null
+   * If both are non-null objects, return jsx for book1
+   * @param {Book} book1 First Book object
+   * @param {Book} book2 Second book object
+   */
+  renderCorrectBook(book1, book2) {
+    const correctBook = book1 || book2;
+
+    return (
+      <Book
+        key={correctBook.id}
+        book={correctBook}
+        markAsWantToRead={this.markAsWantToRead}
+        markAsRead={this.markAsRead}
+        markAsReading={this.markAsReading}
+        />
+    );
+  }
 
   render() {
     const { classes } = this.props;
@@ -87,7 +110,10 @@ class SearchPage extends React.Component {
 
         <div className={classes.searchResults}>
           {this.state.searchResult.map(book => (
-            <Book key={book.id} book={book} />
+            this.renderCorrectBook(
+              this.props.myBooks.find(myBook => myBook.id === book.id),
+              book
+            )
           ))}
         </div>
       </div>

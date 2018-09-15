@@ -45,13 +45,40 @@ class Book extends React.Component {
   };
 
   openMenu = event => {
-    console.log('handle click');
     this.setState({ anchorEl: event.currentTarget });
   };
 
   closeMenu = () => {
     this.setState({ anchorEl: null });
   };
+
+  whantToRead = book => () => {
+    this.closeMenu();
+    return this.props.markAsWantToRead(book);
+  }
+
+  currentlyReading = book => () => {
+    this.closeMenu();
+    return this.props.markAsReading(book);
+  }
+
+  read = book => () => {
+    this.closeMenu();
+    return this.props.markAsRead(book);
+  }
+
+  humanizeBookshelf = bookshelf => {
+    switch (bookshelf) {
+      case 'wantToRead':
+        return 'Want To Read';
+      case 'currentlyReading':
+        return 'Currently Reading';
+      case 'read':
+        return 'Read';
+      default:
+        return 'Isn\'t in your shelves';
+    }
+  }
 
   render() {
     const { book, classes } = this.props;
@@ -65,7 +92,9 @@ class Book extends React.Component {
               <img alt={book.title} src={book.imageLinks.thumbnail} />
             </div>
 
-            <Chip label={book.shelf} variant="outlined" />
+            <div>
+              <Chip label={this.humanizeBookshelf(book.shelf)} variant="outlined" />
+            </div>
 
             <div>
               <Typography className={classes.bookTitle}>{book.title}</Typography>
@@ -78,9 +107,21 @@ class Book extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.closeMenu}
           >
-          <MenuItem onClick={this.closeMenu}>Profile</MenuItem>
-          <MenuItem onClick={this.closeMenu}>My account</MenuItem>
-          <MenuItem onClick={this.closeMenu}>Logout</MenuItem>
+          <MenuItem
+            disabled={book.shelf === 'wantToRead'}
+            onClick={this.whantToRead(book)}>
+            Want to Read
+          </MenuItem>
+          <MenuItem
+            disabled={book.shelf === 'currentlyReading'}
+            onClick={this.currentlyReading(book)}>
+            Reading
+          </MenuItem>
+          <MenuItem
+            disabled={book.shelf === 'read'}
+            onClick={this.read(book)}>
+            Read
+          </MenuItem>
         </Menu>
       </div>
     )
