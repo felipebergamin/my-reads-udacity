@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HeaderBar from './HeaderBar';
 import SearchButton from './SearchButton';
 
-class ShowBookcases extends React.Component {
+class ShowBookshelves extends React.Component {
 
   render() {
     return (
@@ -19,4 +19,4 @@ class ShowBookcases extends React.Component {
   }
 }
 
-export default ShowBookcases;
+export default ShowBookshelves;
