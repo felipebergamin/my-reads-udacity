@@ -43,6 +43,7 @@ class Book extends React.Component {
   state = {
     anchorEl: null,
   };
+  noCoverImgURL = 'https://image.ibb.co/jqVB1e/822a5d14da9a2c8b035750e0f1838e2c186360a9.jpg';
 
   openMenu = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -89,7 +90,7 @@ class Book extends React.Component {
         <Tooltip title="Click for options">
           <Paper className={classes.paperSheet} onClick={this.openMenu}>
             <div className={classes.cover}>
-              <img alt={book.title} src={book.imageLinks.thumbnail} />
+              <img alt={book.title} src={book.imageLinks ? book.imageLinks.thumbnail : this.noCoverImgURL} />
             </div>
 
             <div>
@@ -98,7 +99,7 @@ class Book extends React.Component {
 
             <div>
               <Typography className={classes.bookTitle}>{book.title}</Typography>
-              <Typography>{book.authors.join(', ')}</Typography>
+              <Typography>{book.authors ? book.authors.join(', ') : 'No authors information'}</Typography>
             </div>
           </Paper>
         </Tooltip>
