@@ -36,7 +36,12 @@ class SearchPage extends React.Component {
   debouncedSearch = null;
 
   onSearchChange = (event) => {
-    const searchValue = event.target.value;
+    const searchValue = event.target.value.trim();
+
+    if (!searchValue) {
+      this.setState({ searchResult: [] });
+      return;
+    }
 
     // if exists a debounced search
     if (this.debouncedSearch) {
