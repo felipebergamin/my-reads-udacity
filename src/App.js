@@ -32,7 +32,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route exact path="/" component={ShowBookshelves} />
+        <Route exact path="/" render={() => (
+          <ShowBookshelves myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
+        )} />
 
         <Route exact path="/search" render={() => (
           <SearchPage myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
