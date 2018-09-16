@@ -1,6 +1,7 @@
 import React from 'react';
-import { withStyles, AppBar, Toolbar, TextField } from '@material-ui/core';
+import { withStyles, AppBar, Toolbar, TextField, IconButton, Icon } from '@material-ui/core';
 import { debounce } from 'debounce';
+import { Link } from 'react-router-dom';
 
 import * as BooksAPI from './utils/BooksAPI';
 import Bookshelf from './Bookshelf';
@@ -23,6 +24,9 @@ const styles = theme => ({
     padding: '2px 12px',
     transition: theme.transitions.create(['box-shadow']),
   },
+  linkStyle: {
+    color: 'inherit',
+  }
 });
 
 class SearchPage extends React.Component {
@@ -63,6 +67,12 @@ class SearchPage extends React.Component {
       <div>
         <AppBar position="static">
           <Toolbar>
+
+            <Link to="/" className={classes.linkStyle}>
+              <IconButton className={classes.button} aria-label="Home" color="inherit">
+                <Icon color="inherit">home</Icon>
+              </IconButton>
+            </Link>
 
             <TextField
               onChange={this.onSearchChange}
