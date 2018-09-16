@@ -3,7 +3,7 @@ import { withStyles, AppBar, Toolbar, TextField } from '@material-ui/core';
 import { debounce } from 'debounce';
 
 import * as BooksAPI from './utils/BooksAPI';
-import Book from './Book';
+import Bookshelf from './Bookshelf';
 
 const styles = theme => ({
   searchResults: {
@@ -56,38 +56,6 @@ class SearchPage extends React.Component {
     this.debouncedSearch();
   };
 
-  markAsWantToRead = book => {
-    this.props.onUpdateBook(book, 'wantToRead');
-  };
-
-  markAsRead = book => {
-    this.props.onUpdateBook(book, 'read');
-  };
-
-  markAsReading = book => {
-    this.props.onUpdateBook(book, 'currentlyReading');
-  };
-
-  /**
-   * Receives two objects and return JSX for book that isn't null
-   * If both are non-null objects, return jsx for book1
-   * @param {Book} book1 First Book object
-   * @param {Book} book2 Second book object
-   */
-  renderCorrectBook(book1, book2) {
-    const correctBook = book1 || book2;
-
-    return (
-      <Book
-        key={correctBook.id}
-        book={correctBook}
-        markAsWantToRead={this.markAsWantToRead}
-        markAsRead={this.markAsRead}
-        markAsReading={this.markAsReading}
-        />
-    );
-  }
-
   render() {
     const { classes } = this.props;
 
@@ -108,14 +76,13 @@ class SearchPage extends React.Component {
           </Toolbar>
         </AppBar>
 
-        <div className={classes.searchResults}>
-          {this.state.searchResult.map(book => (
-            this.renderCorrectBook(
-              this.props.myBooks.find(myBook => myBook.id === book.id),
-              book
-            )
+        <Bookshelf
+          books={this.state.searchResult.map(book => (
+            this.props.myBooks.find(myBook => myBook.id === book.id) || book
           ))}
-        </div>
+          onUpdateBook={this.props.onUpdateBook}
+          title="Search Result"
+          />
       </div>
     );
   }
