@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles, AppBar, Toolbar, TextField, IconButton, Icon } from '@material-ui/core';
+import { withStyles, AppBar, Snackbar, Toolbar, TextField, IconButton, Icon } from '@material-ui/core';
 import { debounce } from 'debounce';
 import { Link } from 'react-router-dom';
 
@@ -32,6 +32,7 @@ const styles = theme => ({
 class SearchPage extends React.Component {
   state = {
     searchResult: [],
+    snackbarMessage: null,
   };
   debouncedSearch = null;
 
@@ -54,8 +55,7 @@ class SearchPage extends React.Component {
       BooksAPI.search(searchValue)
         .then(searchResult => {
           if (searchResult.error) {
-            alert(searchResult.error);
-            this.setState({searchResult: []});
+            this.setState({searchResult: [], snackbarMessage: searchResult.error});
             return;
           }
 
@@ -65,6 +65,15 @@ class SearchPage extends React.Component {
     // start debounce timer
     this.debouncedSearch();
   };
+
+  onCloseSnackbar = (event, reason) => {
+    // don't close snackbar when user clicks somewhere on screen
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ snackbarMessage: null });
+  }
 
   render() {
     const { classes } = this.props;
@@ -98,6 +107,17 @@ class SearchPage extends React.Component {
           ))}
           onUpdateBook={this.props.onUpdateBook}
           title="Search Result"
+          />
+
+        <Snackbar
+          anchorOrigin = {{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={!!this.state.snackbarMessage}
+          autoHideDuration={6000}
+          onClose={this.onCloseSnackbar}
+          message={this.state.snackbarMessage}
           />
       </div>
     );
