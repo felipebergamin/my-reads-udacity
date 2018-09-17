@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import ShowBookshelves from './ShowBookshelves';
 import SearchPage from './SearchPage';
@@ -9,10 +9,16 @@ class App extends Component {
   state = {
     myBooks: [],
   };
+  _mounted;
 
   componentDidMount() {
+    this._mounted = true;
     BooksAPI.getAll()
-      .then(myBooks => this.setState({ myBooks }));
+      .then(myBooks => this._mounted && this.setState({ myBooks }));
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
   }
 
   updateBook = (book, shelf) => {
@@ -31,15 +37,17 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Route exact path="/" render={() => (
-          <ShowBookshelves myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
-        )} />
+      <BrowserRouter>
+        <div>
+          <Route exact path="/" render={() => (
+            <ShowBookshelves myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
+          )} />
 
-        <Route exact path="/search" render={() => (
-          <SearchPage myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
-        )} />
-      </div>
+          <Route exact path="/search" render={() => (
+            <SearchPage myBooks={this.state.myBooks} onUpdateBook={this.updateBook} />
+          )} />
+        </div>
+      </BrowserRouter>
     );
   }
 }

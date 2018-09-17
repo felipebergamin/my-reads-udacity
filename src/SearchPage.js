@@ -86,7 +86,7 @@ class SearchPage extends React.Component {
               color="inherit"
               className={classes.textfield}
               InputProps={{ disableUnderline: true }}
-            />
+              />
 
           </Toolbar>
         </AppBar>

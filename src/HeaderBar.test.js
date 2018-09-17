@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import HeaderBar from './HeaderBar';
 
-it('App renders without crashing', () => {
+it('HeaderBar renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<HeaderBar />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

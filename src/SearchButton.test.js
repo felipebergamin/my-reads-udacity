@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import SearchButton from './SearchButton';
 
-it('App renders without crashing', () => {
+it('SearchButton renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<SearchButton />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

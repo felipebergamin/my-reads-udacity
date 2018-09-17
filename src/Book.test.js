@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 
-it('App renders without crashing', () => {
+import Book from './Book';
+
+it('Book renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<Book book={{}} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
