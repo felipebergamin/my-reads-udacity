@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles, AppBar, Snackbar, Toolbar, TextField, IconButton, Icon } from '@material-ui/core';
 import { debounce } from 'debounce';
 import { Link } from 'react-router-dom';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import * as BooksAPI from './utils/BooksAPI';
 import Bookshelf from './Bookshelf';
@@ -79,47 +80,50 @@ class SearchPage extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div>
-        <AppBar position="static">
-          <Toolbar>
+        <div>
+          <AppBar position="static">
+            <Toolbar>
 
-            <Link to="/" className={classes.linkStyle}>
-              <IconButton className={classes.button} aria-label="Home" color="inherit">
-                <Icon color="inherit">home</Icon>
-              </IconButton>
-            </Link>
+              <Link to="/" className={classes.linkStyle}>
+                <IconButton className={classes.button} aria-label="Home" color="inherit">
+                  <Icon color="inherit">home</Icon>
+                </IconButton>
+              </Link>
 
-            <TextField
-              onChange={this.onSearchChange}
-              placeholder="Book Name"
-              margin="normal"
-              color="inherit"
-              className={classes.textfield}
-              InputProps={{ disableUnderline: true }}
+              <TextField
+                onChange={this.onSearchChange}
+                placeholder="Book Name"
+                margin="normal"
+                color="inherit"
+                className={classes.textfield}
+                InputProps={{ disableUnderline: true }}
+                />
+
+            </Toolbar>
+          </AppBar>
+
+          <DragDropContext onDragEnd={() => null}>
+            <Bookshelf
+              id="searchResults"
+              books={this.state.searchResult.map(book => (
+                this.props.myBooks.find(myBook => myBook.id === book.id) || book
+              ))}
+              onUpdateBook={this.props.onUpdateBook}
+              title="Search Result"
               />
+          </DragDropContext>
 
-          </Toolbar>
-        </AppBar>
-
-        <Bookshelf
-          books={this.state.searchResult.map(book => (
-            this.props.myBooks.find(myBook => myBook.id === book.id) || book
-          ))}
-          onUpdateBook={this.props.onUpdateBook}
-          title="Search Result"
-          />
-
-        <Snackbar
-          anchorOrigin = {{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          open={!!this.state.snackbarMessage}
-          autoHideDuration={6000}
-          onClose={this.onCloseSnackbar}
-          message={this.state.snackbarMessage}
-          />
-      </div>
+          <Snackbar
+            anchorOrigin = {{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            open={!!this.state.snackbarMessage}
+            autoHideDuration={6000}
+            onClose={this.onCloseSnackbar}
+            message={this.state.snackbarMessage}
+            />
+        </div>
     );
   }
 }

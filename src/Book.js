@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper, withStyles, Typography, Menu, MenuItem, Tooltip, Chip } from '@material-ui/core';
+import { Draggable } from 'react-beautiful-dnd';
 
 const styles = theme => ({
   card: {
@@ -86,45 +87,52 @@ class Book extends React.Component {
     const { anchorEl } = this.state;
 
     return (
-      <div className={classes.bookContainer}>
-        <Tooltip title="Click for options">
-          <Paper className={classes.paperSheet} onClick={this.openMenu}>
-            <div className={classes.cover}>
-              <img alt={book.title} src={book.imageLinks ? book.imageLinks.thumbnail : this.noCoverImgURL} />
-            </div>
 
-            <div>
-              <Chip label={this.humanizeBookshelf(book.shelf)} variant="outlined" />
-            </div>
+      <Draggable key={book.id} draggableId={book.id}>
+        {(provided, snapshot) => (
 
-            <div>
-              <Typography className={classes.bookTitle}>{book.title}</Typography>
-              <Typography>{book.authors ? book.authors.join(', ') : 'No authors information'}</Typography>
-            </div>
-          </Paper>
-        </Tooltip>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.closeMenu}
-          >
-          <MenuItem
-            disabled={book.shelf === 'wantToRead'}
-            onClick={this.whantToRead(book)}>
-            Want to Read
-          </MenuItem>
-          <MenuItem
-            disabled={book.shelf === 'currentlyReading'}
-            onClick={this.currentlyReading(book)}>
-            Reading
-          </MenuItem>
-          <MenuItem
-            disabled={book.shelf === 'read'}
-            onClick={this.read(book)}>
-            Read
-          </MenuItem>
-        </Menu>
-      </div>
+          <div className={classes.bookContainer} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            <Tooltip title="Click for options">
+              <Paper className={classes.paperSheet} onClick={this.openMenu}>
+                <div className={classes.cover}>
+                  <img alt={book.title} src={book.imageLinks ? book.imageLinks.thumbnail : this.noCoverImgURL} />
+                </div>
+
+                <div>
+                  <Chip label={this.humanizeBookshelf(book.shelf)} variant="outlined" />
+                </div>
+
+                <div>
+                  <Typography className={classes.bookTitle}>{book.title}</Typography>
+                  <Typography>{book.authors ? book.authors.join(', ') : 'No authors information'}</Typography>
+                </div>
+              </Paper>
+            </Tooltip>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={this.closeMenu}
+              >
+              <MenuItem
+                disabled={book.shelf === 'wantToRead'}
+                onClick={this.whantToRead(book)}>
+                Want to Read
+              </MenuItem>
+              <MenuItem
+                disabled={book.shelf === 'currentlyReading'}
+                onClick={this.currentlyReading(book)}>
+                Reading
+              </MenuItem>
+              <MenuItem
+                disabled={book.shelf === 'read'}
+                onClick={this.read(book)}>
+                Read
+              </MenuItem>
+            </Menu>
+          </div>
+
+        )}
+      </Draggable>
     )
   }
 }
