@@ -2,20 +2,33 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { Snackbar } from '@material-ui/core';
 
 import HeaderBar from './HeaderBar';
 import SearchButton from './SearchButton';
 import Bookshelf from './Bookshelf';
 
 class ShowBookshelves extends React.Component {
+  state = {
+    snackbarMessage: null,
+  };
   static propTypes = {
     myBooks: PropTypes.array.isRequired,
     onUpdateBook: PropTypes.func.isRequired,
   };
 
+  onCloseSnackbar = (event, reason) => {
+    // don't close snackbar when user clicks somewhere on screen
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({ snackbarMessage: null });
+  }
+
   onDragEnd = result => {
     if (result.destination.droppableId === result.source.droppableId) {
-      console.log('reorder isn\'t supported');
+      this.setState({ snackbarMessage: 'Sorry, reordering isn\'t supported' });
     } else {
       this.props.onUpdateBook({id: result.draggableId}, result.destination.droppableId);
     }
@@ -54,6 +67,17 @@ class ShowBookshelves extends React.Component {
         <Link to="/search">
           <SearchButton />
         </Link>
+
+        <Snackbar
+          anchorOrigin = {{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={!!this.state.snackbarMessage}
+          autoHideDuration={6000}
+          onClose={this.onCloseSnackbar}
+          message={this.state.snackbarMessage}
+          />
       </div>
     );
   }
