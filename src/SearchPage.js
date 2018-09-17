@@ -55,6 +55,7 @@ class SearchPage extends React.Component {
         .then(searchResult => {
           if (searchResult.error) {
             alert(searchResult.error);
+            this.setState({searchResult: []});
             return;
           }
 
