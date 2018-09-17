@@ -19,8 +19,8 @@ class ShowBookshelves extends React.Component {
 
         <div>
           <Bookshelf
-            title="Read"
-            books={this.props.myBooks.filter(b => b.shelf === 'read')}
+            title="Currently Reading"
+            books={this.props.myBooks.filter(b => b.shelf === 'currentlyReading')}
             onUpdateBook={this.props.onUpdateBook}>
           </Bookshelf>
 
@@ -31,8 +31,8 @@ class ShowBookshelves extends React.Component {
           </Bookshelf>
 
           <Bookshelf
-            title="Currently Reading"
-            books={this.props.myBooks.filter(b => b.shelf === 'currentlyReading')}
+            title="Read"
+            books={this.props.myBooks.filter(b => b.shelf === 'read')}
             onUpdateBook={this.props.onUpdateBook}>
           </Bookshelf>
 
