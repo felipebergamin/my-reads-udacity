@@ -1,8 +1,12 @@
 # MyReads
 
-O MyReads é um projeto desenvolvido como projeto para o programa `Nanodegree React` da `Udacity`.
+O MyReads é um aplicativo Web desenvolvido com React como projeto para o programa `Nanodegree React` da `Udacity`.
 
-Trata-se de um aplicativo Web onde o usuário pode gerenciar estantes de livros. Há três estantes disponíveis: "Lendo Atualmente", "Lido" ou "Querendo Ler". O usuário buscar novos livros e adicionar na estante que desejar, assim como mudar livros entre estantes.
+Trata-se de um aplicativo Web onde o usuário pode gerenciar estantes de livros. Há três estantes disponíveis: "Lendo Atualmente", "Lido" ou "Querendo Ler". O usuário pode buscar novos livros e adicionar na estante que desejar, assim como mudar livros entre estantes.
+
+## Demo
+
+[Clique aqui](https://myreads-felipebergamin.herokuapp.com)
 
 ## Como testar
 
