@@ -27,6 +27,10 @@ class ShowBookshelves extends React.Component {
   }
 
   onDragEnd = result => {
+    if (!result.destination) {
+      return;
+    }
+
     if (result.destination.droppableId === result.source.droppableId) {
       this.setState({ snackbarMessage: 'Sorry, reordering isn\'t supported' });
     } else {
